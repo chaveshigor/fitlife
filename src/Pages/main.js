@@ -1,5 +1,9 @@
 import React from 'react';
-import { View, Text, AsyncStorage } from 'react-native';
+import { View, Text, AsyncStorage, Alert } from 'react-native';
+import { connect } from 'react-redux';
+
+//ACTIONS
+import { getLocation } from '../redux/actions/authActions';
 
 //COMPONENTS
 import ListNearBy from '../components/listNearBy';
@@ -7,7 +11,7 @@ import ListNearBy from '../components/listNearBy';
 //CONFIGS
 import api from '../functions/apiActions';
 
-export default class Main extends React.Component {
+export class Main extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return{
@@ -18,21 +22,37 @@ export default class Main extends React.Component {
       };
 
     state = {
-        list: null,
-        latitude: null,
-        longitude: null
+        list: null
+    }
+
+    handleLocation = async() => {
+        navigator.geolocation.getCurrentPosition(
+            async ({ coords: { latitude, longitude } }) => {
+                await this.props.getLocation(latitude, longitude)
+                const users = await api.showNearBy(latitude, longitude)
+                this.setState({list: users})
+                await AsyncStorage.setItem('@location:latitude', latitude.toString())
+                await AsyncStorage.setItem('@location:longitude', longitude.toString())
+            }, //SUCESSO
+            
+            async () => {
+                Alert.alert('Houve um problema ao verificar sua localização. Sua última localização registrada será utilizada')
+                const latitude = await AsyncStorage.getItem('@location:latitude')
+                const longitude = await AsyncStorage.getItem('@location:longitude')
+                await this.props.getLocation(latitude, longitude) //PEGA ULTIMA LOCALIZAÇAO
+            },//ERRO
+            
+            {
+                timeout: 3000,
+                enableHighAccuracy: true,
+                maximumAge: 1000
+            }
+        )
     }
 
     async componentDidMount() {
         
-        const lat = await AsyncStorage.getItem('@location:latitude')
-        const long = await AsyncStorage.getItem('@location:longitude')
-        this.setState({latitude:lat, longitude:long})
-        
-        const { latitude, longitude } = this.state
-
-        const users = await api.showNearBy(latitude, longitude)
-        this.setState({list: users})
+        await this.handleLocation()
 
     }
 
@@ -50,3 +70,10 @@ export default class Main extends React.Component {
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+    latitude: state.authReducer.latitude,
+    longitude: state.authReducer.longitude,
+});
+
+export default connect(mapStateToProps, { getLocation })(Main)

@@ -1,8 +1,12 @@
 import React from 'react';
 import { View, ScrollView, Text, AsyncStorage, TextInput, TouchableNativeFeedback } from 'react-native';
+import { connect } from 'react-redux';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconMaterialComunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconFoundation from 'react-native-vector-icons/Foundation';
+
+//ACTIONS
+import { editEmail, editPassword } from '../redux/actions/authActions';
 
 //COMPONENTS
 import Button from '../components/button';
@@ -11,8 +15,9 @@ import TwoChoicesButton from '../components/twoChoicesButton';
 //CONFIGS
 import colors from '../configs/colorsDefaut';
 import styles from '../styles/registerStyle';
+import api from '../configs/api';
 
-export default class Register extends React.Component {
+export class Register extends React.Component {
     
     static navigationOptions = {
         header: null
@@ -20,13 +25,9 @@ export default class Register extends React.Component {
 
     state = {
         name: '',
-        email: '',
-        password: '',
         confirmPassword: '',
         genre: '',
         born: '',
-        latitude: null,
-        longitude: null,
         profilePic: ''
     }
 
@@ -38,7 +39,8 @@ export default class Register extends React.Component {
     
     render() {
 
-        const { name, email, password, confirmPassword, born } = this.state
+        const { name, confirmPassword, born } = this.state
+        const { email, password } = this.props
 
         return(
             <View style={styles.container}>
@@ -88,7 +90,7 @@ export default class Register extends React.Component {
 
                             <TextInput
                             style={styles.inputText}
-                            onChangeText={(value) => this.setState({email: value})}
+                            onChangeText={(value) => this.props.editEmail(value)}
                             value={email}
                             placeholder='EMAIL'
                             placeholderTextColor={colors.baseOrange}
@@ -107,7 +109,7 @@ export default class Register extends React.Component {
 
                             <TextInput
                             style={styles.inputText}
-                            onChangeText={(value) => this.setState({password: value})}
+                            onChangeText={(value) => this.props.editPassword(value)}
                             value={password}
                             placeholder='SENHA'
                             placeholderTextColor={colors.baseOrange}
@@ -161,3 +163,12 @@ export default class Register extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    latitude: state.authReducer.latitude,
+    longitude: state.authReducer.longitude,
+    email: state.authReducer.email,
+    password: state.authReducer.password
+});
+
+export default connect(mapStateToProps, { editEmail, editPassword })(Register)
