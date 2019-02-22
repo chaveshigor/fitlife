@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Image, AsyncStorage, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TextInput, Image, AsyncStorage, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
 import IconMaterialComunity from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -28,9 +28,9 @@ export class FirstPage extends React.Component{
     }
 
     state = {
-        personalSelected: false,
-        clientSelected: false,
-        error:'',
+        errorPersonal:'',
+        errorClient: '',
+        error: '',
         token: '',
     }
 
@@ -55,6 +55,7 @@ export class FirstPage extends React.Component{
                 maximumAge: 1000
             }
         )
+        this.props.editEmail('')
     }
 
     handleSelectClient = () => {
@@ -66,34 +67,35 @@ export class FirstPage extends React.Component{
     }
 
     handleLogin = async() => {
-        const { personalSelected, clientSelected } = this.state
+        const { errorPersonal, errorClient, error } = this.state
         const { email, password, latitude, longitude } = this.props
 
         if(email.length > 0 && password.length > 0){
-            if(personalSelected === true){
-                try{
-                    const token = api.loginPersonal(email, password, latitude, longitude)
-                    this.setState({token: token}) //RECEBE TOKEN APOS LOGIN
-                    //this.props.getToken(token)
-                }catch(error){
-                    let { message, field }  = error
-                    this.setState({error: message})
-                }
+            
+            try{
+                const token = api.loginPersonal(email, password, latitude, longitude)
+                this.setState({token: token}) //RECEBE TOKEN APOS LOGIN
+                //this.props.getToken(token)
+            }catch(error){
+                let { message, field }  = error
+                this.setState({errorPersonal: message})
             }
-            else if(clientSelected === true){
-                try{
-                    const token = await api.loginClient(email, password, latitude, longitude)
-                    this.setState({token: token}) //RECEBE TOKEN APÓS LOGIN
-                    await AsyncStorage.setItem('@userActivity', 'Logged') //SETA ESTADO DE USER COMO LOGADO
-                    this.props.navigation.navigate('Logged')
-                }catch(error){
-                    let  { message, field }  = error
-                    this.setState({error: message})
-                }
+        
+            try{
+                const token = await api.loginClient(email, password, latitude, longitude)
+                this.setState({token: token}) //RECEBE TOKEN APÓS LOGIN
+                await AsyncStorage.setItem('@userActivity', 'Logged') //SETA ESTADO DE USER COMO LOGADO
+                this.props.navigation.navigate('Logged')
+            }catch(error){
+                let  { message, field }  = error
+                this.setState({errorClient: message})
             }
-            else{
-                this.setState({error: 'SELECIONE TIPO DE USUÁRIO'})
+
+            if(errorPersonal.length != null && errorClient != null){
+                this.setState({error: 'Email ou senha inválidos'})
             }
+            
+            
             }
         else{
             this.setState({error: 'PREENCHA EMAIL E SENHA'})
@@ -107,16 +109,14 @@ export class FirstPage extends React.Component{
 
 
     render() {
-        let { personalSelected, clientSelected, error, token } = this.state
-        const { email, password, latitude, longitude } = this.props
+        let { error, token } = this.state
+        const { email, password } = this.props
         
         return(
             <KeyboardAvoidingView behavior='padding' style={styles.container}>
                 <Image source={require('../images/logo.png')}/>
                 
                 <Text style={styles.appName}>FITLIFE</Text>
-
-                <Text style={styles.error}>{error}</Text>
                 
                 <View style={styles.inputs}>
                     <View style={styles.inputBox}>
@@ -165,30 +165,19 @@ export class FirstPage extends React.Component{
                 </View>
                 </View>
 
-                <View style={{width: '80%', flexDirection:'row', justifyContent:'space-between', alignItems:'center', marginBottom: 5}}>
-                    <CheckBox
-                    title='Aluno'
-                    isSelected={clientSelected}
-                    onPress={this.handleSelectClient}
-                    size={24}
-                    color={colors.white}
-                    colorSelected={colors.green}
-                    />
-
-                    <CheckBox
-                    title='Personal'
-                    isSelected={personalSelected}
-                    onPress={this.handleSelectPersonal}
-                    size={24}
-                    color={colors.white}
-                    colorSelected={colors.green}
-                    />
-                </View>
-
                 <View style={styles.buttons}>
                     <Button text='LOGIN' color={colors.white} textColor={colors.baseOrange} onPress={this.handleLogin}/>
-                    <Button text='CADASTRE-SE' color={colors.white} textColor={colors.baseOrange} onPress={this.handleSignIn}/>
                     <Button text='LOGIN COM FACEBOOK' color={colors.facebookBlue} textColor={colors.white}/>
+                    <Text style={styles.error}>{error}</Text>
+                </View>
+
+                <View style={{flexDirection: 'row', marginTop: 50}}>
+                    <Text style={styles.register}>Ainda não é cadastrado? </Text>
+                    <TouchableOpacity onPress={this.handleSignIn}>
+                        <Text style={[styles.register, {fontWeight:'bold'}]}>
+                            Clique aqui!
+                        </Text>
+                    </TouchableOpacity>
                 </View>
                 
             </KeyboardAvoidingView>

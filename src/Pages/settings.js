@@ -1,7 +1,11 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-import Header from '../components/header';
+//COMPONENTS
+import Divider from '../components/divider';
+
+//STYLES
+import styles from '../styles/settingsStyle';
 
 export default class Main extends React.Component {
 
@@ -15,8 +19,17 @@ export default class Main extends React.Component {
 
     render() {
         return(
-            <View>
-                <Text>Settings</Text>
+            <View style={styles.container}>
+                <View style={styles.about}>
+                    <View style={styles.pic} />
+                    <View style={styles.info}>
+                        <Text style={styles.name}>JOÃOZINHO</Text>
+                        <Text style={styles.bio}>Gosto de Batata</Text>
+                    </View>
+                </View>
+
+                <Divider width={'100%'} />
+
             </View>
         )
     }

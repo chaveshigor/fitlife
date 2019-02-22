@@ -33,6 +33,11 @@ const styles = StyleSheet.create({
     },
 
     error: {
+        color: colors.white,
+        fontWeight: 'bold'
+    },
+
+    register: {
         color: colors.white
     },
 

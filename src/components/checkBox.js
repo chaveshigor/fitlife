@@ -8,7 +8,7 @@ export default class CheckBox extends React.Component {
     
     render() {
         
-        const { title, isSelected, size, color, colorSelected, onPress } = this.props
+        const { title, isSelected, size, color, colorSelected, onPress, fontSize } = this.props
 
         return(
             <View style={styles.container}>
@@ -19,7 +19,7 @@ export default class CheckBox extends React.Component {
                     color = {!isSelected ? color : colorSelected}
                     />
                 </TouchableOpacity>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={[styles.title, {fontSize: fontSize}]}>{title}</Text>
             </View>
         )
     }

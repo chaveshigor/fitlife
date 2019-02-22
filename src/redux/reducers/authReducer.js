@@ -1,7 +1,6 @@
 const initialState = {
     email: '',
     password: '',
-    userType: '',
     token: '',
     latitude: '',
     longitude: ''
@@ -22,6 +21,10 @@ const authReducer = (state = [], action) => {
         latitude: action.payloads.latitude, 
         longitude: action.payloads.longitude
         }
+    }
+
+    if(action.type == 'getUserType'){
+        return { ...state, userType: action.payloads.userType }
     }
 
     return state

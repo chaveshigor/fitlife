@@ -7,7 +7,8 @@ const colors = {
     baseYellow: 'rgb(241, 196, 15)',
     facebookBlue: '#3B5998',
     googleRed: '#E2402B',
-    green: '#98FB98'
+    green: '#98FB98',
+    lightBlack: '#3C3C3B'
 }
 
 export default colors

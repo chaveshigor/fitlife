@@ -4,18 +4,14 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import headerConfigs from '../configs/header';
 
 //PAGES
-import MyPersonals from '../Pages/myPersonals';
+import MyPersonalsTab from '../tabs/myPersonalsTab';
 import PersonalProfile from '../Pages/personalProfile';
 
 const MyPersonalsStack = createStackNavigator({
+  
   MyPersonalsStackList: {
-    screen: MyPersonals
+    screen: MyPersonalsTab
   },
-
-  MyPersonalsStackPersonalProfile: {
-    screen: PersonalProfile
-  },
-
   
 },{
     defaultNavigationOptions: headerConfigs

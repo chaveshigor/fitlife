@@ -13,7 +13,6 @@ const Button = (props) => {
             <View style={[styles.button, {backgroundColor: color}]}>
                 <Text style={[styles.text, {color: textColor}]}>{text}</Text>
             </View>
-            {/* SALVAR POSSÍVEL ERRO EM UM ASYNCSTORAGE PARA SALVAR A MENSAGEM EM UM STATE*/}
         </TouchableNativeFeedback>
     )
 }
@@ -24,7 +23,8 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         //backgroundColor: this.props.color,
         width: '80%',
-        marginVertical: 5
+        marginVertical: 5,
+        elevation: 2
     },
 
     text:{

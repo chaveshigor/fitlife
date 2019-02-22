@@ -12,7 +12,7 @@ import Loading from './Pages/loading';
 
 loggedIn = async() => {
     //await AsyncStorage.removeItem('@userActivity')
-    //const userStatus = await AsyncStorage.getItem('@userActivity')
+    const userStatus = await AsyncStorage.getItem('@userActivity')
     //console.log(userStatus)
     if(userStatus === 'Logged'){
         console.log('entrou no if')

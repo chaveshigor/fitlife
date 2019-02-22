@@ -9,16 +9,16 @@ export default class TwoChoicesButton extends React.Component {
     state={
         opacity: 0,
         marginLeft: new Animated.Value(25),
-        textColorMan: colors.white,
-        textColorWoman: colors.white
+        textColorMan: colors.baseOrange,
+        textColorWoman: colors.baseOrange
     }
 
     selectOption1 = () => {
         let { onPressOp1 } = this.props
         onPressOp1()
-        this.setState({opacity:1, textColorMan: colors.baseOrange, textColorWoman: colors.white})
+        this.setState({opacity:1, textColorMan: colors.white, textColorWoman: colors.baseOrange})
         Animated.timing(this.state.marginLeft, {
-            toValue: 0,
+            toValue: 5,
             duration: 300
         }).start()
         
@@ -27,9 +27,9 @@ export default class TwoChoicesButton extends React.Component {
     selectOption2 = () => {
         let { onPressOp2 } = this.props
         onPressOp2()
-        this.setState({opacity:1, textColorMan: colors.white, textColorWoman: colors.baseOrange})
+        this.setState({opacity:1, textColorMan: colors.baseOrange, textColorWoman: colors.white})
         Animated.timing(this.state.marginLeft, {
-            toValue: 50,
+            toValue: 55,
             duration: 300
         }).start()
         
@@ -39,7 +39,7 @@ export default class TwoChoicesButton extends React.Component {
     render() {
 
         let { marginLeft, opacity, textColorMan, textColorWoman } = this.state
-        let { opt1, opt2 } = this.props
+        let { opt1, opt2, width } = this.props
 
         let margin = marginLeft.interpolate({
             inputRange:[0, 100],
@@ -47,16 +47,16 @@ export default class TwoChoicesButton extends React.Component {
         })
 
         return(
-            <Animated.View style={styles.container}>
+            <Animated.View style={[styles.container, {width: width}]}>
 
                 <Animated.View style={[styles.button, {marginLeft: margin, opacity: opacity}]} />
 
                 <Animated.View style={styles.textSpace}>
-                    <TouchableWithoutFeedback onPress={this.selectOption1}>
+                    <TouchableWithoutFeedback style={styles.textButton} onPress={this.selectOption1}>
                         <Text style={[styles.text, {color: textColorMan}]}>{opt1}</Text>
                     </TouchableWithoutFeedback>
 
-                    <TouchableWithoutFeedback onPress={this.selectOption2}>
+                    <TouchableWithoutFeedback style={styles.textButton} onPress={this.selectOption2}>
                         <Text style={[styles.text, {color: textColorWoman}]}>{opt2}</Text>
                     </TouchableWithoutFeedback>
                 </Animated.View>
@@ -69,16 +69,17 @@ export default class TwoChoicesButton extends React.Component {
 const styles = StyleSheet.create({
     
     container: {
-        backgroundColor: colors.baseOrange,
+        backgroundColor: colors.white,
         borderRadius: 30,
-        width: '50%', //DEPOIS PEGAR DAS PROPS
-        justifyContent: 'center'
+        width: '80%', //DEPOIS PEGAR DAS PROPS
+        justifyContent: 'center',
+        padding: 10
     },
 
     button: {
-        backgroundColor: colors.white,
+        backgroundColor: colors.baseOrange,
         borderRadius: 30,
-        width: '50%',
+        width: '45%',
         height: 25,
         position: 'absolute',
     },
@@ -86,13 +87,19 @@ const styles = StyleSheet.create({
     textSpace: {
         flexDirection: 'row',
         justifyContent: 'space-around',
+        alignItems: 'center'
         //marginVertical: 10,
         //paddingHorizontal: 5
     },
 
+    textButton: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
     text: {
-        fontSize: 16,
-        color: colors.white,
+        fontSize: 14,
+        color: colors.baseOrange,
     }
 
 });

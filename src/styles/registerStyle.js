@@ -11,11 +11,20 @@ const styles = StyleSheet.create({
         backgroundColor: colors.baseOrange
     },
 
+    message: {
+        fontSize: 18,
+        color: colors.white,
+        marginTop:Platform.OS === 'ios' ? 20 : 0
+    },
+
+    divider: {
+        marginVertical: 10,
+        width: '100%',
+        alignItems: 'center'
+    },
+
     scroll: {
         width: '100%',
-        //paddingHorizontal: 20,
-        paddingVertical: 50,
-        
     },
 
     buttonFb: {
@@ -26,9 +35,6 @@ const styles = StyleSheet.create({
 
     infoBox: {
         width: '90%',
-        paddingVertical: 5,
-        backgroundColor: colors.white,
-        borderRadius: 10,
         alignItems: 'center'
     },
 
@@ -41,9 +47,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'transparent',
-        borderColor: colors.white,
-        borderWidth: 2,
-        width: '90%',
+        width: '100%',
         height: 50,
         marginVertical: 5
     },
@@ -59,9 +63,14 @@ const styles = StyleSheet.create({
     },
 
     inputText: {
+        width: '100%',
         backgroundColor: 'transparent',
-        color: colors.baseOrange,
+        color: colors.white,
         fontSize: 12
+    },
+
+    dataPicker: {
+        color: colors.white
     },
 
     icon: {
@@ -76,16 +85,36 @@ const styles = StyleSheet.create({
     },
 
     genreText: {
-        color: colors.baseOrange,
+        color: colors.white,
         fontSize: 16,
-        marginBottom: 5
+        marginBottom: 5,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
 
     registerButton: {
-        marginTop: 25,
+        marginBottom: 0,
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+
+    buttonModal: {
+        fontSize: 14,
+        color: colors.baseOrange,
+        
+    },
+
+    modal: {
+        marginTop: 20, 
+        paddingTop: 15, 
+        paddingHorizontal: 15, 
+        width: '90%', 
+        height: '90%', 
+        backgroundColor: colors.white, 
+        alignSelf: 'center', 
+        borderRadius: 5, 
+        elevation: 5
     }
 
 })
