@@ -21,7 +21,7 @@ export default class Loading extends React.Component {
     render() {
         return(
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.baseOrange}}>
-                <ActivityIndicator size={100} color={colors.white} />
+                <ActivityIndicator size='large' color={colors.white} />
                 <Text style={{color: colors.white}}>CARREGANDO...</Text>
             </View>
         )

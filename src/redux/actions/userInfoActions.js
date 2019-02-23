@@ -25,3 +25,10 @@ export const getBorn = date => ({
         born: date
     }
 })
+
+export const getlocationRadius = val => ({
+    type: 'getlocationRadius',
+    payloads: {
+        locationRadius: val
+    }
+})

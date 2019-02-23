@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 //ACTIONS
 import { getLocation } from '../redux/actions/authActions';
+import { getlocationRadius } from '../redux/actions/userInfoActions';
 
 //COMPONENTS
 import ListNearBy from '../components/listNearBy';
@@ -54,6 +55,16 @@ export class Main extends React.Component {
         
         await this.handleLocation()
 
+        const locationRadius = parseInt(await AsyncStorage.getItem('@locatianRadius'))
+        this.setState({teste: locationRadius})
+        
+        //SETAR RAIO DE LOCALIZACAO
+        if(locationRadius === null){
+            this.props.getlocationRadius(10)
+        }else{
+            this.props.getlocationRadius(locationRadius)
+        }
+        
     }
 
     render() {
@@ -74,6 +85,7 @@ export class Main extends React.Component {
 const mapStateToProps = (state) => ({
     latitude: state.authReducer.latitude,
     longitude: state.authReducer.longitude,
+    locationRadius: state.userInfoReducer.locationRadius
 });
 
-export default connect(mapStateToProps, { getLocation })(Main)
+export default connect(mapStateToProps, { getLocation, getlocationRadius })(Main)

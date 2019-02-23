@@ -56,6 +56,7 @@ export class FirstPage extends React.Component{
             }
         )
         this.props.editEmail('')
+        
     }
 
     handleSelectClient = () => {
@@ -137,6 +138,7 @@ export class FirstPage extends React.Component{
                             placeholder='EMAIL'
                             placeholderTextColor={colors.white}
                             textContentType='emailAddress'
+                            keyboardType='email-address'
                             />
                         </View>
                     </View>

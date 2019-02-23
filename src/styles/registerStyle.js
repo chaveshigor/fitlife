@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
 
     scroll: {
         width: '100%',
+        marginTop: Platform.OS === 'ios' ? 20 : 0
     },
 
     buttonFb: {
@@ -106,11 +107,11 @@ const styles = StyleSheet.create({
     },
 
     modal: {
-        marginTop: 20, 
+        marginTop: 40, 
         paddingTop: 15, 
         paddingHorizontal: 15, 
         width: '90%', 
-        height: '90%', 
+        height: '85%', 
         backgroundColor: colors.white, 
         alignSelf: 'center', 
         borderRadius: 5, 

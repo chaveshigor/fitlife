@@ -3,11 +3,14 @@ const inicialState = {
     userType: '',
     genre: '',
     born: '',
-    profilePic: ''
+    profilePic: '',
+    locationRadius: 10,
+    creditCard: '',
+
 }
 
 const userInfoReducer = (state=[], action) => {
-    
+
     if(action.type == 'getName'){
         return { ...state, name: action.payloads.name }
     }
@@ -22,6 +25,10 @@ const userInfoReducer = (state=[], action) => {
 
     if(action.type == 'getBorn'){
         return { ...state, born: action.payloads.born}
+    }
+
+    if(action.type == 'getlocationRadius'){
+        return { ...state, locationRadius:action.payloads.locationRadius }
     }
     
     

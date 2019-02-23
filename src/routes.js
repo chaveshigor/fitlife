@@ -35,6 +35,7 @@ const Routes = createSwitchNavigator({
     },
 
 }, {
+    initialRouteName: 'Logged'
     //initialRouteName: loggedIn() === 'Logged' ? 'Logged' : 'Guest'
 })
 
