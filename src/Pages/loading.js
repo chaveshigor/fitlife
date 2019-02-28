@@ -1,12 +1,18 @@
 import React from 'react';
 import { View, Text, AsyncStorage, ActivityIndicator } from 'react-native';
+import { connect } from 'react-redux';
+
+//ACTIONS
+import { getLocation } from '../redux/actions/authActions';
+import { getlocationRadius } from '../redux/actions/userInfoActions';
 
 //CONFIGS
 import colors from '../configs/colorsDefaut';
 
-export default class Loading extends React.Component {
-  
+export class Loading extends React.Component {
+
     async componentDidMount() {
+
         const userStatus = await AsyncStorage.getItem('@userActivity')
         //console.log(userStatus)
         
@@ -19,6 +25,7 @@ export default class Loading extends React.Component {
     }
     
     render() {
+
         return(
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.baseOrange}}>
                 <ActivityIndicator size='large' color={colors.white} />
@@ -27,3 +34,11 @@ export default class Loading extends React.Component {
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+    latitude: state.authReducer.latitude,
+    longitude: state.authReducer.longitude,
+    locationRadius: state.userInfoReducer.locationRadius
+});
+
+export default connect(mapStateToProps, { getLocation, getlocationRadius })(Loading)

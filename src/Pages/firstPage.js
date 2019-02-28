@@ -6,7 +6,7 @@ import IconMaterialComunity from 'react-native-vector-icons/MaterialCommunityIco
 
 
 //ACTIONS
-import { getLocation, editEmail, editPassword } from '../redux/actions/authActions';
+import { getLocation, editEmail, editPassword, getToken } from '../redux/actions/authActions';
 
 //CONFIGS
 import colors from '../configs/colorsDefaut';
@@ -31,7 +31,6 @@ export class FirstPage extends React.Component{
         errorPersonal:'',
         errorClient: '',
         error: '',
-        token: '',
     }
 
     async componentDidMount() {
@@ -72,19 +71,20 @@ export class FirstPage extends React.Component{
         const { email, password, latitude, longitude } = this.props
 
         if(email.length > 0 && password.length > 0){
-            
+            /*
             try{
                 const token = api.loginPersonal(email, password, latitude, longitude)
-                this.setState({token: token}) //RECEBE TOKEN APOS LOGIN
-                //this.props.getToken(token)
+                await AsyncStorage.setItem('@token', token)
+                this.props.getToken(token) //RECEBE TOKEN APOS LOGIN
             }catch(error){
                 let { message, field }  = error
                 this.setState({errorPersonal: message})
             }
-        
+            */
             try{
                 const token = await api.loginClient(email, password, latitude, longitude)
-                this.setState({token: token}) //RECEBE TOKEN APÓS LOGIN
+                await AsyncStorage.setItem('@token', token)
+                this.props.getToken(token) //RECEBE TOKEN APÓS LOGIN
                 await AsyncStorage.setItem('@userActivity', 'Logged') //SETA ESTADO DE USER COMO LOGADO
                 this.props.navigation.navigate('Logged')
             }catch(error){
@@ -191,7 +191,8 @@ const mapStateToProps = state => ({
     latitude: state.authReducer.latitude,
     longitude: state.authReducer.longitude,
     email: state.authReducer.email,
-    password: state.authReducer.password
+    password: state.authReducer.password,
+    token: state.authReducer.token,
 });
 
-export default connect(mapStateToProps, { getLocation, editEmail, editPassword })(FirstPage)
+export default connect(mapStateToProps, { getLocation, editEmail, editPassword, getToken })(FirstPage)

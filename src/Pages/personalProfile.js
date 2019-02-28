@@ -18,13 +18,13 @@ export default class PersonalProfile extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return{
       //header: <Header title='Nome do Personal' backButton={true} navigation={navigation} />,
-      title: 'Nome',
+      title: navigation.getParam(name),
       tabBarLabel:'Localizar',
     }
   };
 
   state={
-    name: '',
+    name: this.props.navigation.getParam(name),
     services: [{key:'1', name: 'MUSCULAÇÃO', description: 'Treinamento de musculação'},
               {key:'2', name: 'MUSCULAÇÃO', description: 'Treinamento de musculação'},
               {key:'3', name: 'MUSCULAÇÃO', description: 'Treinamento de musculação'},
@@ -68,7 +68,7 @@ export default class PersonalProfile extends React.Component {
           <View style={{width:'100%', alignItems: 'center'}}>
 
           <View style={styles.description}>
-              <Text style={styles.name}>NOME</Text>
+              <Text style={styles.name}>{this.state.name}</Text>
               <Text style={styles.bio}>Descrição interessante aqui</Text>
             </View>
 

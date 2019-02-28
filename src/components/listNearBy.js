@@ -9,7 +9,7 @@ import colors from '../configs/colorsDefaut';
 const renderList = ({ name, distance }, { navigation }) => 
     <View style={styles.container}>
 
-        <TouchableOpacity onPress={() => navigation.navigate('MainStackPersonalProfile')} style={styles.box}>
+        <TouchableOpacity onPress={() => navigation.navigate('MainStackPersonalProfile', {name: name})} style={styles.box}>
             <View style={styles.picture} /* TAG PARA A FOTO DE PERFIL */ />
 
             <View style={styles.content}>

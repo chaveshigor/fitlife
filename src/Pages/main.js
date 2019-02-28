@@ -12,59 +12,72 @@ import ListNearBy from '../components/listNearBy';
 //CONFIGS
 import api from '../functions/apiActions';
 
+//FUNCTIONS
+import { handleLocation } from '../functions/main/functions'
+
 export class Main extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return{
-            //header: <Header title='Localizar' />,
             title: 'Localizar',
             tabBarLabel:'Localizar',
         }
       };
 
     state = {
-        list: null
+        list: null,
+        teste: null,
+        latitude: null, 
+        longitude: null
     }
 
-    handleLocation = async() => {
-        navigator.geolocation.getCurrentPosition(
-            async ({ coords: { latitude, longitude } }) => {
-                await this.props.getLocation(latitude, longitude)
-                const users = await api.showNearBy(latitude, longitude)
-                this.setState({list: users})
-                await AsyncStorage.setItem('@location:latitude', latitude.toString())
-                await AsyncStorage.setItem('@location:longitude', longitude.toString())
-            }, //SUCESSO
-            
-            async () => {
-                Alert.alert('Houve um problema ao verificar sua localização. Sua última localização registrada será utilizada')
-                const latitude = await AsyncStorage.getItem('@location:latitude')
-                const longitude = await AsyncStorage.getItem('@location:longitude')
-                await this.props.getLocation(latitude, longitude) //PEGA ULTIMA LOCALIZAÇAO
-            },//ERRO
-            
-            {
-                timeout: 3000,
-                enableHighAccuracy: true,
-                maximumAge: 1000
-            }
-        )
-    }
-
-    async componentDidMount() {
-        
-        await this.handleLocation()
-
-        const locationRadius = parseInt(await AsyncStorage.getItem('@locatianRadius'))
-        this.setState({teste: locationRadius})
-        
+    handleRadiusLocation = async() => {
+        const locationRadius = await AsyncStorage.getItem('@locatianRadius')
         //SETAR RAIO DE LOCALIZACAO
-        if(locationRadius === null){
+        if(locationRadius == null ){
             this.props.getlocationRadius(10)
         }else{
-            this.props.getlocationRadius(locationRadius)
+            this.props.getlocationRadius(parseInt(locationRadius))
         }
+    }
+
+    handleSearch = async() => {
+
+        navigator.geolocation.getCurrentPosition(
+        async ({ coords: { latitude, longitude } }) => {
+            
+            this.props.getLocation(latitude, longitude)
+            //INSERT IF HERE TO VERIFY THE TYPE OF THE USER THAT IS TRYING TO SEARCH SOMEONE
+            this.handleSearchPersonal(latitude, longitude, this.props.locationRadius)
+            console.log('sucesso')
+        }, //SUCESSO
         
+        async () => {
+            Alert.alert('falha')
+            
+        },//ERRO
+        
+        {
+            timeout: 2000,
+            enableHighAccuracy: true,
+            maximumAge: 1000
+        }
+        )
+        
+    }
+
+    handleSearchPersonal = async(latitude, longitude, distance) => {
+        const data = await api.showPersonalNearby(latitude, longitude, distance)
+        this.setState({list: data})
+    }
+
+    handlePersonalLogin = async() => {
+    }
+    
+    async componentDidMount() {
+        
+        await this.handleRadiusLocation()
+        await this.handleSearch()
     }
 
     render() {
@@ -77,6 +90,7 @@ export class Main extends React.Component {
                 <View>
                     <ListNearBy data={list} navigation={navigation} />
                 </View>
+                <Text>{this.state.latitude}</Text>
             </View>
         )
     }

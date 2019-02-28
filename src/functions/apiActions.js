@@ -1,6 +1,17 @@
 import axios from '../configs/api';
 
 class api {
+
+    async teste(latitude, longitude, distance) {
+        //console.log(latitude)
+        const {data} = await axios.post('/', {
+            latitude: latitude,
+            longitude: longitude, 
+            distance: distance
+        })
+        return data
+    }
+////////////////////////////////////////////////////////////////////
     async loginPersonal(email, password, latitude, longitude) {
         const response = await axios.post('session/loginpersonal', {
             email: email,
@@ -8,30 +19,63 @@ class api {
             latitude: latitude,
             longitude: longitude
         })
-        const { data } = response
-        const { type, token } = data
+        const { data: { token } } = response
+        //const { type, token } = data
         return token
     }
-
+//////////////////////////////////////////////////////////////////////////
     async loginClient(email, password, latitude, longitude) {
-        const response = await axios.post('userclient/login', {
+        const response = await axios.post('session/client', {
             email: email,
             password: password,
             latitude: latitude,
             longitude: longitude
         })
-        const { data } = response
-        const { type, token } = data
+        const { data: { token } } = response
+        //const { type, token } = data
         return token
     }
-
-    async showNearBy(latitude, longitude) {
-        const { data } = await axios.post('users/shownearby', {
+///////////////////////////////////////////////////////////////////////////
+    async showPersonalNearby(latitude, longitude, distance) {
+        const { data } = await axios.post('p', {
+            headers: {
+                'Content-Type': 'application/json'
+            },
             latitude: latitude,
-            longitude: longitude
+            longitude: longitude,
+            distance: distance
         })
+        //console.log(data)
         return data
     }
+//////////////////////////////////////////////////////////////////////////
+    async newClient(name, email, password, born, genre, latitude, longitude) {
+        await axios.post('client', {
+            name,
+            email,
+            password,
+            born,
+            genre,
+            latitude,
+            longitude
+        })
+        //FAZER O LOGIN DO NOVO USUARIO E RETORNAR UM TOKEN
+
+    }
+////////////////////////////////////////////////////////////////////////////////
+    async newPersonal(name, email, password, born, genre, latitude, longitude) {
+        await axios.post('client', {
+            name,
+            email,
+            password,
+            born,
+            genre,
+            latitude,
+            longitude
+        })    
+    }
+    //FAZER O LOGIN DO NOVO USUARIO E RETORNAR UM TOKEN
+    //async get
 }
 
 export default new api()

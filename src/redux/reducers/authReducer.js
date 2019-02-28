@@ -27,6 +27,10 @@ const authReducer = (state = [], action) => {
         return { ...state, userType: action.payloads.userType }
     }
 
+    if(action.type == 'getToken'){
+        return { ...state, token: action.payloads.token }
+    }
+
     return state
 }
 

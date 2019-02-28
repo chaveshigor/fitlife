@@ -20,10 +20,16 @@ export const getLocation = (latitude, longitude) => ({
     }
 })
 
-export const getUserType = (type) => ({
+export const getUserType = type => ({
     type: 'getUserType',
     payloads: {
         userType: type
     }
 })
 
+export const getToken = token => ({
+    type: 'getToken',
+    payloads: {
+        token: token
+    }
+})
