@@ -1,16 +1,33 @@
 import React from 'react';
-import { View, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, FlatList, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import colors from '../configs/colorsDefaut';
 
+import axios from 'axios'
+
 //PASSAR NOME DO PERSONAL PARA PROXIMA PAGINA NO NAVIGATE
 
-const renderList = ({ name, distance }, { navigation }) => 
+const renderList = ({ name, distance, my_services, description, profilePicture, id }, { navigation }) => 
+    
     <View style={styles.container}>
+    
+        <TouchableOpacity onPress={() => navigation.navigate('MainStackPersonalProfile', {
+            name,
+            my_services,
+            description,
+            profilePicture,
+            id
+            } )} style={styles.box}>
 
-        <TouchableOpacity onPress={() => navigation.navigate('MainStackPersonalProfile', {name: name})} style={styles.box}>
-            <View style={styles.picture} /* TAG PARA A FOTO DE PERFIL */ />
+            {
+                profilePicture == null ?
+                <View style={styles.picture}/> :
+                <Image
+                style={{width: 80, height: 80, borderRadius: 80}}
+                source={{uri: `http://192.168.0.104:3333/session/personalpicture/${id}`}}
+                />
+            }
 
             <View style={styles.content}>
                 <Text style={styles.name}>{name}</Text>
@@ -27,6 +44,7 @@ const renderList = ({ name, distance }, { navigation }) =>
     </View>
 
 const List = (props) => {
+    //console.log(my_services)
     return(
         <FlatList
             style={styles.list}

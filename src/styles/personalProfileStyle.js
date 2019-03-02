@@ -22,6 +22,12 @@ const style = StyleSheet.create({
         borderRadius: 100,
     },
 
+    pictureWithContent: {
+        width: 100,
+        height: 100,
+        borderRadius: 100,
+    },
+
     rating: {
 
     },

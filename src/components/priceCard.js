@@ -7,26 +7,27 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../configs/colorsDefaut';
 
 export default class PriceCard extends React.Component {
-    
+
     state = {
-        info:[{key: '0', service: 'Musculação', price: 100, days: 'Todo dia', lessions: 1},
-            {key: '1', service: 'Luta', price: 100, days: 'Segunda / Quarta', lessions: 1},
-            {key: '2', service: 'Dança', price: 100, days: 'Todo dia', lessions: 1},],
-
-        //USAR METODO MAP PARA INSERIR A KEY (0, 1, 2 ...) NOS SERVIÇOS QUANDO RECEBER REQUISIÇAO
+        lessions: 1
     }
-
     render() {
 
-        const { info } = this.state
+        const { title, description, price } = this.props
+        const { lessions } = this.state
 
-        const renderPrice = ({service, days, price, lessions, key}) => (
-            <View style={styles.container}>
+        return(
+            <View style={{width: '100%', alignItems: 'center', justifyContent: 'center'}}>
+                {/*<FlatList
+                style={{width: '100%'}}
+                data={info}
+                renderItem={({ item }) => renderPrice(item, item)} />*/}
+                <View style={styles.container}>
                 <View style={styles.box}>
                 <View style={{width: '100%', alignItems: 'center', justifyContent: 'center', marginVertical: 20, marginHorizontal: 15}}>
-                    <Text style={styles.service}>{service}</Text>
+                    <Text style={styles.service}>{title}</Text>
                     <Text style={styles.price}>{`R$${lessions * price},00`/* PREÇO AQUI*/}</Text>
-                    <Text style={styles.description}>{days}</Text>
+                    <Text style={styles.description}>{description}</Text>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Text style={styles.total}>Quantidade desejada:</Text>
                         <Picker
@@ -53,16 +54,8 @@ export default class PriceCard extends React.Component {
                         <Text style={styles.buttonText}>CONTRATAR</Text>
                     </TouchableOpacity>
                 </View>
+                </View>
             </View>
-        </View>
-        )
-
-        return(
-            <View style={{width: '100%', alignItems: 'center', justifyContent: 'center'}}>
-                <FlatList
-                style={{width: '100%'}}
-                data={info}
-                renderItem={({ item }) => renderPrice(item, item)} />
             </View>
         )
     }

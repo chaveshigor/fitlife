@@ -8,16 +8,22 @@ export default class Service extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return{
-          //header: <Header title='Nome do Personal' backButton={true} navigation={navigation} />,
-          title: 'Serviço',
-          tabBarLabel:'Localizar',
+          title: navigation.getParam('title'),
+          tabBarLabel: 'Localizar',
         }
       };
 
-    render() {
+      render() {
+
+        const { navigation } = this.props
+
         return(
             <View style={{alignItems: 'center'}}>
-                <PriceCard />
+                <PriceCard
+                title={navigation.getParam('title')}
+                price={navigation.getParam('price')}
+                description={navigation.getParam('description')}
+                />
             </View>
         )
     }

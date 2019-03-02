@@ -3,10 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native
 
 import colors from '../configs/colorsDefaut';
 
-const renderServices = ({ name, description }, {navigation} ) => (
+const renderServices = ({ title, description, price }, {navigation} ) => (
     <View style={styles.container}>
         <View style={styles.header}>
-            <Text style={styles.serviceTitle}>{name}</Text>
+            <Text style={styles.serviceTitle}>{title}</Text>
             <View style={styles.divider} />
         </View>
 
@@ -14,7 +14,11 @@ const renderServices = ({ name, description }, {navigation} ) => (
             <Text style={styles.description}>{description}</Text>
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MainStackService')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MainStackService', {
+            title,
+            description,
+            price
+        })}>
             <View>
                 <Text style={styles.buttonText}>SAIBA MAIS</Text>
             </View>
@@ -26,7 +30,7 @@ const showServices = (props) => (
     <FlatList
     data={props.data}
     renderItem={({item}) => renderServices(item, props)}
-    keyExtractor={props.data.name}
+    keyExtractor={(item) => item.id.toString()}
     />
 )
 

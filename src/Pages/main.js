@@ -25,10 +25,7 @@ export class Main extends React.Component {
       };
 
     state = {
-        list: null,
-        teste: null,
-        latitude: null, 
-        longitude: null
+        list: null
     }
 
     handleRadiusLocation = async() => {
@@ -41,21 +38,23 @@ export class Main extends React.Component {
         }
     }
 
-    handleSearch = async() => {
+    handleLocation = async() => {
 
-        navigator.geolocation.getCurrentPosition(
+        await navigator.geolocation.getCurrentPosition(
         async ({ coords: { latitude, longitude } }) => {
             
             this.props.getLocation(latitude, longitude)
-            //INSERT IF HERE TO VERIFY THE TYPE OF THE USER THAT IS TRYING TO SEARCH SOMEONE
-            this.handleSearchPersonal(latitude, longitude, this.props.locationRadius)
-            console.log('sucesso')
-        }, //SUCESSO
+            AsyncStorage.setItem('@location: latitude', latitude.toString())
+            AsyncStorage.setItem('@location: longitude', longitude.toString())
+            //INSERT THE COMMAND "IF" HERE TO VERIFY THE TYPE OF THE USER THAT IS TRYING TO SEARCH SOMEONE
+        }, //SUCCESS
         
         async () => {
-            Alert.alert('falha')
+            Alert.alert('Para uma melhor experiência, por favor ative sua localização')
+            AsyncStorage.getItem('@location: latitude')
+            AsyncStorage.getItem('@location: longitude')
             
-        },//ERRO
+        },//ERROR
         
         {
             timeout: 2000,
@@ -77,20 +76,30 @@ export class Main extends React.Component {
     async componentDidMount() {
         
         await this.handleRadiusLocation()
-        await this.handleSearch()
+        await this.handleLocation()
     }
 
     render() {
 
         let { list } = this.state
-        const { navigation } = this.props
+        const { navigation, latitude, longitude, locationRadius } = this.props
+        
+        //IT WAS NECESSARY SEARCH HERE, NOT IN componentDidMount BECAUSE THE latitude
+        //AND longitude WERE NOT DEFINED WHILE componentDidMount WAS RUNNING AND THAT 
+        //WAS THE SOLUTION THA I FOUND THO SOLV THIS PROBLEM
+
+        if(list == null) {
+            if(typeof latitude !== 'undefined' ) {
+                this.handleSearchPersonal(latitude, longitude, locationRadius)
+            }
+        }
+        
 
         return(
             <View>
                 <View>
                     <ListNearBy data={list} navigation={navigation} />
                 </View>
-                <Text>{this.state.latitude}</Text>
             </View>
         )
     }
